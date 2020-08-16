@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Models;
 
-namespace API.Services.Interfaces
+namespace Core.Services.Interfaces
 {
     public interface IProductTypeService
     {

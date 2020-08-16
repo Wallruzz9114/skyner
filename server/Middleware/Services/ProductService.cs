@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Services.Interfaces;
 using Core.Models;
+using Core.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Middleware.Data;
 
-namespace API.Services.Implementations
+namespace Middleware.Services
 {
     public class ProductService : IProductService
     {

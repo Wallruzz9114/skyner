@@ -12,7 +12,7 @@ namespace Middleware.Data.Configurations
             builder.Property(product => product.Name).IsRequired().HasMaxLength(100);
             builder.Property(product => product.Description).IsRequired();
             builder.Property(product => product.Price).HasColumnType("decimal(18, 2)");
-            builder.Property(product => product.PictureURL);
+            builder.Property(product => product.PictureURL).IsRequired();
 
             builder.HasOne(product => product.ProductBrand).WithMany().HasForeignKey(product => product.ProductBrandId);
             builder.HasOne(product => product.ProductType).WithMany().HasForeignKey(product => product.ProductTypeId);

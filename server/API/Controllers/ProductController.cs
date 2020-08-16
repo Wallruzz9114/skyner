@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Services.Interfaces;
+using API.ViewModels;
+using AutoMapper;
+using Core.Interfaces;
 using Core.Models;
+using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,43 +13,49 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly IProductService _productService;
-        private readonly IProductBrandService _productBrandService;
-        private readonly IProductTypeService _productTypeService;
+        private readonly IGenericService<Product> _productService;
+        private readonly IGenericService<ProductBrand> _productBrandService;
+        private readonly IGenericService<ProductType> _productTypeService;
+        private readonly IMapper _mapper;
 
-        public ProductController(IProductService productService, IProductBrandService productBrandService, IProductTypeService productTypeService)
+        public ProductController(
+            IGenericService<Product> productService,
+            IGenericService<ProductBrand> productBrandService,
+            IGenericService<ProductType> productTypeService,
+            IMapper mapper)
         {
-            _productService = productService;
-            _productBrandService = productBrandService;
             _productTypeService = productTypeService;
+            _productBrandService = productBrandService;
+            _productService = productService;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<List<Product>>> GetProductsAsync()
+        public async Task<ActionResult<IReadOnlyList<ProductViewModel>>> GetProductsAsync()
         {
-            var products = await _productService.GetProductsAsync();
-            return Ok(products);
+            var specification = new ProductsWithTypesAndBrandsSpecification();
+            var products = await _productService.ListAllWithObjectsAsync(specification);
+            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(products));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Product>>> GetProductAsync(int id)
+        public async Task<ActionResult<ProductViewModel>> GetProductAsync(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
-            return Ok(product);
+            var specification = new ProductsWithTypesAndBrandsSpecification(id);
+            var product = await _productService.GetByIdWithObjectsAsync(specification);
+            return _mapper.Map<Product, ProductViewModel>(product);
         }
 
         [HttpGet("brands")]
-        public async Task<ActionResult<List<ProductBrand>>> GetProductBrandsAsync()
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrandsAsync()
         {
-            var productBrands = await _productBrandService.GetProductBrandsAsync();
-            return Ok(productBrands);
+            return Ok(await _productBrandService.ListAllAsync());
         }
 
         [HttpGet("types")]
-        public async Task<ActionResult<List<ProductType>>> GetProductTypesAsync()
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypesAsync()
         {
-            var productTypes = await _productTypeService.GetProductTypesAsync();
-            return Ok(productTypes);
+            return Ok(await _productTypeService.ListAllAsync());
         }
     }
 }
