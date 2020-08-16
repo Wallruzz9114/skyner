@@ -1,0 +1,6 @@
+server/.vscode
+server/API/bin
+server/API/obj
+server/API/Properties
+server/API/appsettings.Development.json
+server/API/appsettings.json
