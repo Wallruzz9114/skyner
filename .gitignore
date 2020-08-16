@@ -4,3 +4,7 @@ server/API/obj
 server/API/Properties
 server/API/appsettings.Development.json
 server/API/appsettings.json
+server/Core/bin
+server/Core/obj
+server/Middleware/bin
+server/Middleware/obj
