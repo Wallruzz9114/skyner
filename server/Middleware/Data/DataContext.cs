@@ -1,4 +1,5 @@
-using API.Core.Models;
+using System.Reflection;
+using Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Middleware.Data
@@ -7,6 +8,14 @@ namespace Middleware.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<ProductBrand> ProductBrands { get; set; }
     }
 }

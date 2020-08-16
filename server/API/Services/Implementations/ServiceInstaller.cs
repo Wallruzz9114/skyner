@@ -14,6 +14,9 @@ namespace API.Services.Implementations
             services.AddDbContext<DataContext>(
                 optionsBuilder => optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
             );
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductBrandService, ProductBrandService>();
+            services.AddScoped<IProductTypeService, ProductTypeService>();
         }
     }
 }
