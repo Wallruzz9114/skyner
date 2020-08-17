@@ -53,5 +53,7 @@ client/typings
 
 # System Files
 client/.DS_Store
+client//src/.DS_Store
+client/src/assets/images/.DS_Store
 client/Thumbs.db
 client/ssl
