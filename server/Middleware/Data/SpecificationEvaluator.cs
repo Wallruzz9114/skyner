@@ -13,6 +13,12 @@ namespace Middleware.Data
 
             if (specification.Creteria != null)
                 query = query.Where(specification.Creteria);
+            if (specification.OrderBy != null)
+                query = query.OrderBy(specification.OrderBy);
+            if (specification.OrderByDescending != null)
+                query = query.OrderByDescending(specification.OrderByDescending);
+            if (specification.IsPagingEnabled)
+                query = query.Skip(specification.Skip).Take(specification.Take);
 
             return specification.Includes.Aggregate(query, (model, expression) => model.Include(expression));
         }

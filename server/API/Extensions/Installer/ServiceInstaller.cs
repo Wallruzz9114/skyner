@@ -48,6 +48,13 @@ namespace API.Extensions.Installer
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "SkynER API", Version = "v1" });
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
         }
     }
 }

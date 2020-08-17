@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Errors;
+using API.Helpers;
 using API.ViewModels;
 using AutoMapper;
 using Core.Interfaces;
@@ -31,11 +32,15 @@ namespace API.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IReadOnlyList<ProductViewModel>>> GetProductsAsync()
+        public async Task<ActionResult<Pagination<ProductViewModel>>> GetProductsAsync([FromQuery] ProductResultParameters parameters)
         {
-            var specification = new ProductsWithTypesAndBrandsSpecification();
+            var specification = new ProductsWithTypesAndBrandsSpecification(parameters);
+            var countSpecification = new ProductWithFiltersForCountSpecification(parameters);
+            var totalItems = await _productService.CountAsync(countSpecification);
             var products = await _productService.ListAllWithObjectsAsync(specification);
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(products));
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(products);
+
+            return Ok(new Pagination<ProductViewModel>(parameters.PageIndex, parameters.PageSize, totalItems, data));
         }
 
         [HttpGet("{id}")]

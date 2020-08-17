@@ -17,6 +17,11 @@ namespace Middleware.Services
             _dataContext = dataContext;
         }
 
+        public async Task<int> CountAsync(ISpecification<T> specification)
+        {
+            return await ApplySpecification(specification).CountAsync();
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _dataContext.Set<T>().FindAsync(id);
