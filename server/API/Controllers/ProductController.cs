@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.Errors;
 using API.ViewModels;
 using AutoMapper;
 using Core.Interfaces;
 using Core.Models;
 using Core.Specifications;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         private readonly IGenericService<Product> _productService;
         private readonly IGenericService<ProductBrand> _productBrandService;
@@ -39,10 +39,16 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductViewModel>> GetProductAsync(int id)
         {
             var specification = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productService.GetByIdWithObjectsAsync(specification);
+
+            if (product == null)
+                return NotFound(new APIResponse(404));
+
             return _mapper.Map<Product, ProductViewModel>(product);
         }
 

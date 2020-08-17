@@ -1,9 +1,9 @@
 using API.Extensions;
+using API.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace API
 {
@@ -25,13 +25,19 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
-
+            app.UseMiddleware<ExceptionHandler>();
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthorization();
+
+            // Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "SkynER API v1");
+            });
 
             app.UseEndpoints(endpoints =>
             {
