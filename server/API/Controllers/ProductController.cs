@@ -66,7 +66,8 @@ namespace API.Controllers
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypesAsync()
         {
-            return Ok(await _productTypeService.ListAllAsync());
+            var productTypes = await _productTypeService.ListAllAsync();
+            return Ok(productTypes);
         }
     }
 }

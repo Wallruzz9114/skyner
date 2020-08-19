@@ -13,6 +13,7 @@ namespace Core.Specifications
         {
             AddInclude(product => product.ProductType);
             AddInclude(product => product.ProductBrand);
+            AddOrderBy(product => product.Name);
 
             if (!string.IsNullOrEmpty(parameters.Sort))
                 switch (parameters.Sort)
