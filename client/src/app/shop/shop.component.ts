@@ -12,7 +12,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
   styleUrls: ['./shop.component.scss'],
 })
 export class ShopComponent implements OnInit {
-  @ViewChild('search') searchTerm: ElementRef;
+  @ViewChild('search', { static: false }) searchTerm: ElementRef;
 
   public products: IProduct[];
   public productBrands: IProductBrand[];
