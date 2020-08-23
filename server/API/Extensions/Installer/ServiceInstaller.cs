@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using API.Errors;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 namespace API.Extensions.Installer
 {
@@ -22,10 +23,16 @@ namespace API.Extensions.Installer
             services.AddDbContext<DataContext>(
                 optionsBuilder => optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
             );
+            services.AddSingleton<IConnectionMultiplexer>(serviceProvider =>
+            {
+                var configurationOptions = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis"));
+                return ConnectionMultiplexer.Connect(configurationOptions);
+            });
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductBrandService, ProductBrandService>();
             services.AddScoped<IProductTypeService, ProductTypeService>();
+            services.AddScoped<ICustomerBasketService, CustomerBasketService>();
             services.AddAutoMapper(typeof(MappingProfiles));
             services.Configure<ApiBehaviorOptions>(options =>
             {

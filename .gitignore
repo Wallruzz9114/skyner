@@ -9,6 +9,7 @@ server/Core/obj
 server/Middleware/bin
 server/Middleware/obj
 server/.DS_Store
+server/API/dump.rdb
 
 # compiled output
 client/dist
