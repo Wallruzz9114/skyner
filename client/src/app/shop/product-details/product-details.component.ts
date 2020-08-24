@@ -1,3 +1,4 @@
+import { CustomerBasketService } from './../../customer-basket/customer-basket.service';
 import { ShopService } from './../shop.service';
 import { IProduct } from './../../shared/models/product';
 import { Component, OnInit } from '@angular/core';
@@ -11,11 +12,13 @@ import { BreadcrumbService } from 'xng-breadcrumb';
 })
 export class ProductDetailsComponent implements OnInit {
   public product: IProduct;
+  public quantity = 1;
 
   constructor(
     private shopService: ShopService,
     private activatedRoute: ActivatedRoute,
-    private breadcrumbService: BreadcrumbService
+    private breadcrumbService: BreadcrumbService,
+    private customerBasketService: CustomerBasketService
   ) {
     this.breadcrumbService.set('@productDetails', '');
   }
@@ -24,17 +27,32 @@ export class ProductDetailsComponent implements OnInit {
     this.loadProduct();
   }
 
+  public addItemToBasket(): void {
+    this.customerBasketService.addItemToCustomerBasket(
+      this.product,
+      this.quantity
+    );
+  }
+
+  public incrementQuantity(): void {
+    this.quantity++;
+  }
+
+  public decrementQuantity(): void {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
   public loadProduct(): void {
     this.shopService
       .getProduct(+this.activatedRoute.snapshot.paramMap.get('id'))
       .subscribe(
-        (product) => {
+        (product: IProduct) => {
           this.product = product;
           this.breadcrumbService.set('@productDetails', product.name);
         },
-        (error) => {
-          console.log(error);
-        }
+        (error: any) => console.log(error)
       );
   }
 }

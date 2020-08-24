@@ -22,6 +22,22 @@ const routes: Routes = [
       import('./shop/shop.module').then((module) => module.ShopModule),
     data: { breadcrumb: 'Shop' },
   },
+  {
+    path: 'basket',
+    loadChildren: () =>
+      import('./customer-basket/customer-basket.module').then(
+        (module) => module.CustomerBasketModule
+      ),
+    data: { breadcrumb: 'Basket' },
+  },
+  {
+    path: 'checkout',
+    loadChildren: () =>
+      import('./checkout/checkout.module').then(
+        (module) => module.CheckoutModule
+      ),
+    data: { breadcrumb: 'Basket' },
+  },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];
 

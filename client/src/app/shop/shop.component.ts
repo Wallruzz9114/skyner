@@ -5,6 +5,7 @@ import { IProductBrand } from './../shared/models/product-brand';
 import { ShopService } from './shop.service';
 import { IProduct } from './../shared/models/product';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { IPaginatedProductsResult } from '../shared/models/paginated-products-result';
 
 @Component({
   selector: 'app-shop',
@@ -40,37 +41,31 @@ export class ShopComponent implements OnInit {
 
   public getProducts(): void {
     this.shopService.getProducts(this.sortParameters).subscribe(
-      (paginatedProducts) => {
+      (paginatedProducts: IPaginatedProductsResult) => {
         this.products = paginatedProducts.data;
         this.sortParameters.pageIndex = paginatedProducts.pageIndex;
         this.sortParameters.pageSize = paginatedProducts.pageSize;
         this.totalCount = paginatedProducts.count;
       },
-      (error) => {
-        console.log(error);
-      }
+      (error: any) => console.log(error)
     );
   }
 
   public getProductBrands(): void {
     this.shopService.getProductBrands().subscribe(
-      (productBrands) => {
+      (productBrands: IProductBrand[]) => {
         this.productBrands = [{ id: 0, name: 'All' }, ...productBrands];
       },
-      (error) => {
-        console.log(error);
-      }
+      (error: any) => console.log(error)
     );
   }
 
   public getProductTypes(): void {
     this.shopService.getProductTypes().subscribe(
-      (productTypes) => {
+      (productTypes: IProductType[]) => {
         this.productTypes = [{ id: 0, name: 'All' }, ...productTypes];
       },
-      (error) => {
-        console.log(error);
-      }
+      (error: any) => console.log(error)
     );
   }
 
