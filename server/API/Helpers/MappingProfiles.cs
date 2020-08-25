@@ -12,6 +12,9 @@ namespace API.Helpers
                 .ForMember(pvm => pvm.ProductBrand, e => e.MapFrom(p => p.ProductBrand.Name))
                 .ForMember(pvm => pvm.ProductType, e => e.MapFrom(p => p.ProductType.Name))
                 .ForMember(pvm => pvm.PictureURL, e => e.MapFrom<ProductURLResolver>());
+
+            CreateMap<Address, AddressViewModel>();
+            CreateMap<AddressViewModel, Address>();
         }
     }
 }

@@ -12,6 +12,11 @@ using System.Linq;
 using API.Errors;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
+using Core.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace API.Extensions.Installer
 {
@@ -23,16 +28,39 @@ namespace API.Extensions.Installer
             services.AddDbContext<DataContext>(
                 optionsBuilder => optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
             );
+            services.AddDbContext<IdentityDataContext>(
+                optionsBuilder => optionsBuilder.UseNpgsql(configuration.GetConnectionString("IdentityConnection"))
+            );
             services.AddSingleton<IConnectionMultiplexer>(serviceProvider =>
             {
-                var configurationOptions = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis"));
+                var configurationOptions = ConfigurationOptions.Parse(configuration.GetConnectionString("RedisConnection"));
                 return ConnectionMultiplexer.Connect(configurationOptions);
             });
+
+            var builder = services.AddIdentityCore<AppUser>();
+            builder = new IdentityBuilder(builder.UserType, builder.Services);
+            builder.AddEntityFrameworkStores<IdentityDataContext>();
+            builder.AddSignInManager<SignInManager<AppUser>>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(bearerOptions =>
+                {
+                    bearerOptions.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:Key"])),
+                        ValidIssuer = configuration["Token:Issuer"],
+                        ValidateIssuer = true,
+                        ValidateAudience = false
+                    };
+                });
+
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductBrandService, ProductBrandService>();
             services.AddScoped<IProductTypeService, ProductTypeService>();
             services.AddScoped<ICustomerBasketService, CustomerBasketService>();
+            services.AddScoped<IJWTTokenService, JWTTokenService>();
             services.AddAutoMapper(typeof(MappingProfiles));
             services.Configure<ApiBehaviorOptions>(options =>
             {
