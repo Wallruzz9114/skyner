@@ -1,6 +1,6 @@
-import { ICustomerBasket } from './../../models/customer-basket';
+import { CartService } from './../../../cart/cart.service';
+import { ICart } from './../../models/cart';
 import { Observable } from 'rxjs';
-import { CustomerBasketService } from './../../../customer-basket/customer-basket.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,11 +9,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
-  public customerBasket$: Observable<ICustomerBasket>;
+  public cart$: Observable<ICart>;
 
-  constructor(private customerBasketService: CustomerBasketService) {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.customerBasket$ = this.customerBasketService.customerBasket$;
+    this.cart$ = this.cartService.cart$;
   }
 }

@@ -15,6 +15,8 @@ namespace API.Helpers
 
             CreateMap<Address, AddressViewModel>();
             CreateMap<AddressViewModel, Address>();
+            CreateMap<CartViewModel, Cart>();
+            CreateMap<CartItemViewModel, CartItem>();
         }
     }
 }

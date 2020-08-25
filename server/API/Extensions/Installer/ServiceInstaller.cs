@@ -59,7 +59,7 @@ namespace API.Extensions.Installer
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductBrandService, ProductBrandService>();
             services.AddScoped<IProductTypeService, ProductTypeService>();
-            services.AddScoped<ICustomerBasketService, CustomerBasketService>();
+            services.AddScoped<ICartService, CartService>();
             services.AddScoped<IJWTTokenService, JWTTokenService>();
             services.AddAutoMapper(typeof(MappingProfiles));
             services.Configure<ApiBehaviorOptions>(options =>
@@ -82,6 +82,29 @@ namespace API.Extensions.Installer
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "SkynER API", Version = "v1" });
+
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "JWT Auth Bearer Scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+
+                options.AddSecurityDefinition("Bearer", securitySchema);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    { securitySchema, new []{ "Bearer" } }
+                };
+
+                options.AddSecurityRequirement(securityRequirement);
             });
             services.AddCors(options =>
             {

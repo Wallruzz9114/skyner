@@ -1,9 +1,9 @@
 <div class='container mt-2'>
-  <div *ngIf='(this.customerBasket$ | async) === null'>
-    <p>There are no items in your basket!</p>
+  <div *ngIf='(this.cart$ | async) === null'>
+    <p>There are no items in your cart!</p>
   </div>
 
-  <div *ngIf='this.customerBasket$ | async'>
+  <div *ngIf='this.cart$ | async'>
     <div class='pb-5'>
       <div class='container'>
         <div class='row'>
@@ -30,7 +30,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor='let item of (this.customerBasket$ | async).items'>
+                  <tr *ngFor='let item of (this.cart$ | async).items'>
                     <th scope='row'>
                       <div class='p-2'>
                         <img

@@ -1,4 +1,4 @@
-import { CustomerBasketService } from './customer-basket/customer-basket.service';
+import { CartService } from './cart/cart.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,18 +9,16 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   public title = 'SkynER';
 
-  constructor(private customerBasketService: CustomerBasketService) {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    const basketId: string = localStorage.getItem('basket_id');
+    const cartId: string = localStorage.getItem('cart_id');
 
-    if (basketId) {
-      this.customerBasketService
-        .getCustomerBasketFromServer(basketId)
-        .subscribe(
-          () => console.log('Initialised basket'),
-          (error: any) => console.log(error)
-        );
+    if (cartId) {
+      this.cartService.getCartFromServer(cartId).subscribe(
+        () => console.log('Initialised cart'),
+        (error: any) => console.log(error)
+      );
     }
   }
 }

@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Errors;
 using API.Extensions;
@@ -36,7 +34,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet("get")]
-        public async Task<ActionResult<AppUserViewModel>> GetCurrentAppUser()
+        public async Task<ActionResult<AppUserViewModel>> GetCurrentAppUserAsync()
         {
             var appUser = await _userManager.FindByClaimsPrincipal(HttpContext.User);
 
@@ -49,14 +47,14 @@ namespace API.Controllers
         }
 
         [HttpGet("exists")]
-        public async Task<ActionResult<bool>> UserExists([FromQuery] string email)
+        public async Task<ActionResult<bool>> UserExistsAsync([FromQuery] string email)
         {
             return await _userManager.FindByEmailAsync(email) != null;
         }
 
         [Authorize]
         [HttpGet("address")]
-        public async Task<ActionResult<AddressViewModel>> GetUserAddress()
+        public async Task<ActionResult<AddressViewModel>> GetUserAddressAsync()
         {
             var appUser = await _userManager.FindUserByCaimPrincipalWithAddressAsync(HttpContext.User);
             return _mapper.Map<Address, AddressViewModel>(appUser.Address);
@@ -101,6 +99,12 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<AppUserViewModel>> Register(RegisterRequestViewModel registerRequestViewModel)
         {
+            if (UserExistsAsync(registerRequestViewModel.Email).Result.Value)
+                return new BadRequestObjectResult(new APIValidationErrorResponse
+                {
+                    Errors = new[] { "Email address already in use" },
+                });
+
             var appUser = new AppUser
             {
                 DisplayName = registerRequestViewModel.DisplayName,

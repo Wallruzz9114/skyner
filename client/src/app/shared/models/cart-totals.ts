@@ -1,4 +1,4 @@
-export interface IBasketTotals {
+export interface ICartTotals {
   shipping: number;
   subTotal: number;
   total: number;

@@ -3,18 +3,18 @@
 </div>
 <div class='p-4'>
   <p class='font-italic mb-4'>Shipping costs will be added depending on choices made during checkout</p>
-  <ul *ngIf='this.customerBasketTotal$ | async' class='list-unstyled mb-4'>
+  <ul *ngIf='this.cartTotal$ | async' class='list-unstyled mb-4'>
     <li class='d-flex justify-content-between py-3 border-bottom'>
       <strong class='text-muted'>Order Subtotal</strong>
-      <strong>{{ (this.customerBasketTotal$ | async).subTotal | currency }}</strong>
+      <strong>{{ (this.cartTotal$ | async).subTotal | currency }}</strong>
     </li>
     <li class='d-flex justify-content-between py-3 border-bottom'>
       <strong class='text-muted'>Shipping and handling</strong>
-      <strong>{{ (this.customerBasketTotal$ | async).shipping | currency }}</strong>
+      <strong>{{ (this.cartTotal$ | async).shipping | currency }}</strong>
     </li>
     <li class='d-flex justify-content-between py-3 border-bottom'>
       <strong class='text-muted'>Total</strong>
-      <strong>{{ (this.customerBasketTotal$ | async).total | currency }}</strong>
+      <strong>{{ (this.cartTotal$ | async).total | currency }}</strong>
     </li>
   </ul>
 </div>

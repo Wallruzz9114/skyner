@@ -1,6 +1,6 @@
 namespace Core.Models
 {
-    public class BasketItem
+    public class CartItem
     {
         public int Id { get; set; }
         public string ProductName { get; set; }

@@ -23,12 +23,10 @@ const routes: Routes = [
     data: { breadcrumb: 'Shop' },
   },
   {
-    path: 'basket',
+    path: 'cart',
     loadChildren: () =>
-      import('./customer-basket/customer-basket.module').then(
-        (module) => module.CustomerBasketModule
-      ),
-    data: { breadcrumb: 'Basket' },
+      import('./cart/cart.module').then((module) => module.CartModule),
+    data: { breadcrumb: 'Cart' },
   },
   {
     path: 'checkout',
@@ -36,7 +34,7 @@ const routes: Routes = [
       import('./checkout/checkout.module').then(
         (module) => module.CheckoutModule
       ),
-    data: { breadcrumb: 'Basket' },
+    data: { breadcrumb: 'Cart' },
   },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];

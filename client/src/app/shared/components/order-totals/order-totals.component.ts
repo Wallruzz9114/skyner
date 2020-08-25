@@ -1,7 +1,7 @@
-import { CustomerBasketService } from './../../../customer-basket/customer-basket.service';
+import { CartService } from './../../../cart/cart.service';
+import { ICartTotals } from './../../models/cart-totals';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { IBasketTotals } from '../../models/basket-totals';
 
 @Component({
   selector: 'app-order-totals',
@@ -9,11 +9,11 @@ import { IBasketTotals } from '../../models/basket-totals';
   styleUrls: ['./order-totals.component.scss'],
 })
 export class OrderTotalsComponent implements OnInit {
-  public customerBasketTotal$: Observable<IBasketTotals>;
+  public cartTotal$: Observable<ICartTotals>;
 
-  constructor(private customerBasketService: CustomerBasketService) {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.customerBasketTotal$ = this.customerBasketService.customerBasketTotal$;
+    this.cartTotal$ = this.cartService.cartTotal$;
   }
 }

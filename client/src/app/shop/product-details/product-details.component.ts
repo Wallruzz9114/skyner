@@ -1,4 +1,4 @@
-import { CustomerBasketService } from './../../customer-basket/customer-basket.service';
+import { CartService } from './../../cart/cart.service';
 import { ShopService } from './../shop.service';
 import { IProduct } from './../../shared/models/product';
 import { Component, OnInit } from '@angular/core';
@@ -18,7 +18,7 @@ export class ProductDetailsComponent implements OnInit {
     private shopService: ShopService,
     private activatedRoute: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
-    private customerBasketService: CustomerBasketService
+    private cartService: CartService
   ) {
     this.breadcrumbService.set('@productDetails', '');
   }
@@ -27,11 +27,8 @@ export class ProductDetailsComponent implements OnInit {
     this.loadProduct();
   }
 
-  public addItemToBasket(): void {
-    this.customerBasketService.addItemToCustomerBasket(
-      this.product,
-      this.quantity
-    );
+  public addItemToCart(): void {
+    this.cartService.addItemToCart(this.product, this.quantity);
   }
 
   public incrementQuantity(): void {
