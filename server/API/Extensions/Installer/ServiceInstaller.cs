@@ -44,7 +44,6 @@ namespace API.Extensions.Installer
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(bearerOptions =>
-                {
                     bearerOptions.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -52,33 +51,33 @@ namespace API.Extensions.Installer
                         ValidIssuer = configuration["Token:Issuer"],
                         ValidateIssuer = true,
                         ValidateAudience = false
-                    };
-                });
+                    }
+                );
 
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IProductBrandService, ProductBrandService>();
-            services.AddScoped<IProductTypeService, ProductTypeService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IJWTTokenService, JWTTokenService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddAutoMapper(typeof(MappingProfiles));
+
             services.Configure<ApiBehaviorOptions>(options =>
-            {
                 options.InvalidModelStateResponseFactory = actionContext =>
                 {
                     var errors = actionContext.ModelState
-                    .Where(error => error.Value.Errors.Count > 0)
-                    .SelectMany(kvp => kvp.Value.Errors)
-                    .Select(modelError => modelError.ErrorMessage).ToArray();
+                        .Where(error => error.Value.Errors.Count > 0)
+                        .SelectMany(kvp => kvp.Value.Errors)
+                        .Select(modelError => modelError.ErrorMessage)
+                        .ToArray();
 
-                    var errorResponse = new APIValidationErrorResponse
-                    {
-                        Errors = errors
-                    };
+                    var errorResponse = new APIValidationErrorResponse { Errors = errors };
 
                     return new BadRequestObjectResult(errorResponse);
-                };
-            });
+                }
+            );
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "SkynER API", Version = "v1" });
@@ -106,13 +105,11 @@ namespace API.Extensions.Installer
 
                 options.AddSecurityRequirement(securityRequirement);
             });
+
             services.AddCors(options =>
-            {
                 options.AddPolicy("CorsPolicy", policy =>
-                {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
-                });
-            });
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200")
+            ));
         }
     }
 }

@@ -23,7 +23,8 @@ namespace Middleware.Data
                         Street = "9916 111 St",
                         City = "Edmonton",
                         Province = "AB",
-                        PostalCode = "T5H 0C5"
+                        PostalCode = "T5H 0C5",
+                        Country = "Canada"
                     }
                 };
 

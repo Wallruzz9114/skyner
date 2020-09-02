@@ -20,10 +20,7 @@ namespace Middleware.Data
                     var productBrandsData = File.ReadAllText("../Middleware/Data/Seed/product_brands.json");
                     var productBrands = JsonSerializer.Deserialize<List<ProductBrand>>(productBrandsData);
 
-                    foreach (var productBrand in productBrands)
-                    {
-                        dataContext.ProductBrands.Add(productBrand);
-                    }
+                    foreach (var productBrand in productBrands) dataContext.ProductBrands.Add(productBrand);
 
                     await dataContext.SaveChangesAsync();
                 }
@@ -33,10 +30,7 @@ namespace Middleware.Data
                     var productTypesData = File.ReadAllText("../Middleware/Data/Seed/product_types.json");
                     var productTypes = JsonSerializer.Deserialize<List<ProductType>>(productTypesData);
 
-                    foreach (var productType in productTypes)
-                    {
-                        dataContext.ProductTypes.Add(productType);
-                    }
+                    foreach (var productType in productTypes) dataContext.ProductTypes.Add(productType);
 
                     await dataContext.SaveChangesAsync();
                 }
@@ -46,10 +40,17 @@ namespace Middleware.Data
                     var productsData = File.ReadAllText("../Middleware/Data/Seed/products.json");
                     var products = JsonSerializer.Deserialize<List<Product>>(productsData);
 
-                    foreach (var product in products)
-                    {
-                        dataContext.Products.Add(product);
-                    }
+                    foreach (var product in products) dataContext.Products.Add(product);
+
+                    await dataContext.SaveChangesAsync();
+                }
+
+                if (!dataContext.DeliveryMethods.Any())
+                {
+                    var deliveryMethodsData = File.ReadAllText("../Middleware/Data/Seed/delivery_methods.json");
+                    var deliveryMethods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryMethodsData);
+
+                    foreach (var deliveryMethod in deliveryMethods) dataContext.DeliveryMethods.Add(deliveryMethod);
 
                     await dataContext.SaveChangesAsync();
                 }

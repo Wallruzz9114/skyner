@@ -9,10 +9,7 @@ namespace Core.Specifications
     {
         public Specification() { }
 
-        public Specification(Expression<Func<T, bool>> creteria)
-        {
-            Creteria = creteria;
-        }
+        public Specification(Expression<Func<T, bool>> creteria) => Creteria = creteria;
 
         public Expression<Func<T, bool>> Creteria { get; }
 
@@ -28,20 +25,12 @@ namespace Core.Specifications
 
         public bool IsPagingEnabled { get; private set; }
 
-        protected void AddInclude(Expression<Func<T, object>> includeExpression)
-        {
-            Includes.Add(includeExpression);
-        }
+        protected void AddInclude(Expression<Func<T, object>> includeExpression) => Includes.Add(includeExpression);
 
-        protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
-        {
-            OrderBy = orderByExpression;
-        }
+        protected void AddOrderBy(Expression<Func<T, object>> orderByExpression) => OrderBy = orderByExpression;
 
-        protected void AddOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
-        {
+        protected void AddOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression) =>
             OrderByDescending = orderByDescendingExpression;
-        }
 
         protected void ApplyPaging(int skip, int take)
         {

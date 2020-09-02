@@ -28,9 +28,7 @@ namespace Middleware.Services
                 new Claim(JwtRegisteredClaimNames.Email, appUser.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, appUser.DisplayName)
             };
-
             var signInCredientials = new SigningCredentials(_symetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);
-
             var securityTokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -38,9 +36,7 @@ namespace Middleware.Services
                 SigningCredentials = signInCredientials,
                 Issuer = _configuration["Token:Issuer"]
             };
-
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-
             var securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
 
             return jwtSecurityTokenHandler.WriteToken(securityToken);

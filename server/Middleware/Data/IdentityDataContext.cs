@@ -8,9 +8,6 @@ namespace Middleware.Data
     {
         public IdentityDataContext(DbContextOptions<IdentityDataContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
+        protected override void OnModelCreating(ModelBuilder builder) => base.OnModelCreating(builder);
     }
 }

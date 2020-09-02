@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using API.Errors;
@@ -15,7 +14,10 @@ namespace API.Utils
         private readonly ILogger<ExceptionHandler> _logger;
         private readonly IHostEnvironment _hostEnvironment;
 
-        public ExceptionHandler(RequestDelegate requestDelegate, ILogger<ExceptionHandler> logger, IHostEnvironment hostEnvironment)
+        public ExceptionHandler(
+            RequestDelegate requestDelegate,
+            ILogger<ExceptionHandler> logger,
+            IHostEnvironment hostEnvironment)
         {
             _requestDelegate = requestDelegate;
             _logger = logger;
@@ -32,14 +34,16 @@ namespace API.Utils
             {
                 _logger.LogError(exception, exception.Message);
                 httpContext.Response.ContentType = "application/json";
-                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
                 var response = _hostEnvironment.IsDevelopment()
-                    ? new APIException((int)HttpStatusCode.InternalServerError, exception.Message, exception.StackTrace.ToString())
-                    : new APIResponse((int)HttpStatusCode.InternalServerError);
-
+                    ? new APIException(
+                        StatusCodes.Status500InternalServerError,
+                        exception.Message,
+                        exception.StackTrace.ToString()
+                    )
+                    : new APIResponse(StatusCodes.Status500InternalServerError);
                 var serializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
                 var json = JsonSerializer.Serialize(response, serializerOptions);
 
                 await httpContext.Response.WriteAsync(json);

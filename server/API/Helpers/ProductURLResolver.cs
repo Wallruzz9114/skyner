@@ -9,14 +9,13 @@ namespace API.Helpers
     {
         private readonly IConfiguration _configuration;
 
-        public ProductURLResolver(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        public ProductURLResolver(IConfiguration configuration) => _configuration = configuration;
 
-        public string Resolve(Product source, ProductViewModel destination, string destMember, ResolutionContext context)
-        {
-            return !string.IsNullOrEmpty(source.PictureURL) ? _configuration["ApiURL"] + source.PictureURL : null;
-        }
+        public string Resolve(
+            Product source,
+            ProductViewModel destination,
+            string destMember,
+            ResolutionContext context
+        ) => !string.IsNullOrEmpty(source.PictureURL) ? _configuration["ApiURL"] + source.PictureURL : null;
     }
 }

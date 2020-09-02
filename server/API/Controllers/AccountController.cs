@@ -47,14 +47,12 @@ namespace API.Controllers
         }
 
         [HttpGet("exists")]
-        public async Task<ActionResult<bool>> UserExistsAsync([FromQuery] string email)
-        {
-            return await _userManager.FindByEmailAsync(email) != null;
-        }
+        public async Task<ActionResult<bool>> AppUserExistsAsync([FromQuery] string email) =>
+            await _userManager.FindByEmailAsync(email) != null;
 
         [Authorize]
         [HttpGet("address")]
-        public async Task<ActionResult<AddressViewModel>> GetUserAddressAsync()
+        public async Task<ActionResult<AddressViewModel>> GetAppUserAddressAsync()
         {
             var appUser = await _userManager.FindUserByCaimPrincipalWithAddressAsync(HttpContext.User);
             return _mapper.Map<Address, AddressViewModel>(appUser.Address);
@@ -62,7 +60,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPut("update")]
-        public async Task<ActionResult<AddressViewModel>> UpdateUserAddressAsync(AddressViewModel addressViewModel)
+        public async Task<ActionResult<AddressViewModel>> UpdateAppUserAddressAsync(AddressViewModel addressViewModel)
         {
             var appUser = await _userManager.FindUserByCaimPrincipalWithAddressAsync(HttpContext.User);
             appUser.Address = _mapper.Map<AddressViewModel, Address>(addressViewModel);
@@ -99,7 +97,7 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<AppUserViewModel>> Register(RegisterRequestViewModel registerRequestViewModel)
         {
-            if (UserExistsAsync(registerRequestViewModel.Email).Result.Value)
+            if (AppUserExistsAsync(registerRequestViewModel.Email).Result.Value)
                 return new BadRequestObjectResult(new APIValidationErrorResponse
                 {
                     Errors = new[] { "Email address already in use" },

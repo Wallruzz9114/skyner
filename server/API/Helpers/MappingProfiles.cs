@@ -17,6 +17,17 @@ namespace API.Helpers
             CreateMap<AddressViewModel, Address>();
             CreateMap<CartViewModel, Cart>();
             CreateMap<CartItemViewModel, CartItem>();
+            CreateMap<AddressViewModel, ShippingAddress>();
+
+            CreateMap<Order, OrderToReturnViewModel>()
+                .ForMember(otrvm => otrvm.DeliveryMethod, e => e.MapFrom(o => o.DeliveryMethod.Name))
+                .ForMember(otrvm => otrvm.ShippingPrice, e => e.MapFrom(o => o.DeliveryMethod.Price));
+
+            CreateMap<OrderItem, OrderItemViewModel>()
+                .ForMember(oivm => oivm.ProductId, e => e.MapFrom(oi => oi.ItemOrdered.ProductItemId))
+                .ForMember(oivm => oivm.ProductName, e => e.MapFrom(oi => oi.ItemOrdered.ProductName))
+                .ForMember(oivm => oivm.PictureURL, e => e.MapFrom(oi => oi.ItemOrdered.PictureURL))
+                .ForMember(oivm => oivm.PictureURL, e => e.MapFrom<OrderItemPictureURLResolver>());
         }
     }
 }

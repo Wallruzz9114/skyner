@@ -11,10 +11,8 @@ namespace Middleware.Services
     {
         private readonly IDatabase _database;
 
-        public CartService(IConnectionMultiplexer connectionMultiplexer)
-        {
+        public CartService(IConnectionMultiplexer connectionMultiplexer) =>
             _database = connectionMultiplexer.GetDatabase();
-        }
 
         public async Task<Cart> CreateOrUpdateCartAsync(Cart cart)
         {
@@ -29,10 +27,7 @@ namespace Middleware.Services
             return await GetCartAsync(cart.Id);
         }
 
-        public async Task<bool> EmptyCartAsync(string id)
-        {
-            return await _database.KeyDeleteAsync(id);
-        }
+        public async Task<bool> EmptyCartAsync(string id) => await _database.KeyDeleteAsync(id);
 
         public async Task<Cart> GetCartAsync(string id)
         {

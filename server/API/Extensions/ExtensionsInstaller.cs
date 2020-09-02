@@ -12,7 +12,8 @@ namespace API.Extensions
         public static void InstallServicesInAssembly(IServiceCollection services, IConfiguration configuration)
         {
             List<IServiceInstaller> installers = typeof(Startup).Assembly.ExportedTypes
-                .Where(type => typeof(IServiceInstaller).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+                .Where(type => typeof(IServiceInstaller)
+                .IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                 .Select(Activator.CreateInstance)
                 .Cast<IServiceInstaller>()
                 .ToList();

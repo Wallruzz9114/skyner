@@ -11,5 +11,8 @@ namespace Core.Interfaces
         Task<T> GetByIdWithObjectsAsync(ISpecification<T> specification);
         Task<IReadOnlyList<T>> ListAllWithObjectsAsync(ISpecification<T> specification);
         Task<int> CountAsync(ISpecification<T> specification);
+        void Add(T model);
+        void Update(T model);
+        void Delete(T model);
     }
 }

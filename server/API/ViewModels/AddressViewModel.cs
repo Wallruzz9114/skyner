@@ -23,6 +23,6 @@ namespace API.ViewModels
         public string PostalCode { get; set; }
 
         [Required]
-        public string AppUserId { get; set; }
+        public string Country { get; set; }
     }
 }

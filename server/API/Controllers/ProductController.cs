@@ -58,16 +58,11 @@ namespace API.Controllers
         }
 
         [HttpGet("brands")]
-        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrandsAsync()
-        {
-            return Ok(await _productBrandService.ListAllAsync());
-        }
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrandsAsync() =>
+            Ok(await _productBrandService.ListAllAsync());
 
         [HttpGet("types")]
-        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypesAsync()
-        {
-            var productTypes = await _productTypeService.ListAllAsync();
-            return Ok(productTypes);
-        }
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypesAsync() =>
+            Ok(await _productTypeService.ListAllAsync());
     }
 }
