@@ -25,17 +25,20 @@ namespace API.Extensions.Installer
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers();
+
             services.AddDbContext<DataContext>(
                 optionsBuilder => optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
             );
             services.AddDbContext<IdentityDataContext>(
                 optionsBuilder => optionsBuilder.UseNpgsql(configuration.GetConnectionString("IdentityConnection"))
             );
+
             services.AddSingleton<IConnectionMultiplexer>(serviceProvider =>
             {
                 var configurationOptions = ConfigurationOptions.Parse(configuration.GetConnectionString("RedisConnection"));
                 return ConnectionMultiplexer.Connect(configurationOptions);
             });
+            services.AddSingleton<ICacheService, CacheService>();
 
             var builder = services.AddIdentityCore<AppUser>();
             builder = new IdentityBuilder(builder.UserType, builder.Services);
