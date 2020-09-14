@@ -11,4 +11,7 @@ server/Middleware/obj
 server/.DS_Store
 server/API/dump.rdb
 server/.DS_Store
-client/
+client/node_modules
+.angulardoc.json
+.DS_Store
+.vscode
